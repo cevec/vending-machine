@@ -1,28 +1,34 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { selectOrderById, decreaseOrderTime } from './ordersSlice';
+import { selectOrderById, decreaseOrderTime, orderStatus } from './ordersSlice';
 
 const OrderListItem = ({ id }) => {
     const order = useSelector((state) => selectOrderById(state, id));
-    const { product, remainingPreparationTime } = order;
+    const { product, remainingPreparationTime, status } = order;
     const { name, thumbnail } = product;
 
     const dispatch = useDispatch();
-
+    
     useEffect(() => { 
-        if (remainingPreparationTime > 0) {
+        if (remainingPreparationTime > 0 && status === orderStatus.inProgress) {
             dispatch(decreaseOrderTime(id));
         }
         // eslint-disable-next-line
-    },[remainingPreparationTime])
+    },[remainingPreparationTime,status])
 
     const renderPreparationTime = () => {
-        if (remainingPreparationTime <= 0) {
+        if (status === orderStatus.completed) {
             return <i className="check green icon" />;
-        } else {
+        } else if (status === orderStatus.inProgress) {
             return (
                 <div className="ui green circular label">
+                    {remainingPreparationTime}
+                </div>
+            );
+        } else {
+            return (
+                <div className="ui red circular label">
                     {remainingPreparationTime}
                 </div>
             );

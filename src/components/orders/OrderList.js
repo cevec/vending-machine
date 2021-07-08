@@ -2,6 +2,7 @@ import { useSelector } from 'react-redux';
 
 import { selectOrderIds } from './ordersSlice';
 import OrderListItem from './OrderListItem';
+import OrderDispatchMode from './OrderDispatchMode';
 
 const OrderList = () => {
     const orderIds = useSelector((state) => selectOrderIds(state));
@@ -15,11 +16,13 @@ const OrderList = () => {
             <h3 className="ui top attached header">
                 Order list
             </h3>
-            <div className="ui attached segment">
+            <OrderDispatchMode />
+            <div className="ui bottom attached segment">
                 <div className="ui divided list">
                     {renderOrders}
                 </div>
             </div>
+            
         </div>
         
     );
