@@ -16,15 +16,26 @@ const ordersSlice = createSlice({
                 remainingPreparationTime: action.payload.preparation_time
             };
             state.data[order.id] = order;
+        },
+        orderTimeDecreased(state, action) {
+            const order = state.data[action.payload];
+            order.remainingPreparationTime--;
         }
     }
 });
 
 export const {
-    orderAdded
+    orderAdded,
+    orderTimeDecreased
 } = ordersSlice.actions;
 
 export default ordersSlice.reducer;
+
+export const decreaseOrderTime = (orderId) => dispatch => {
+    setTimeout(() => {
+        dispatch(orderTimeDecreased(orderId));
+    }, 1000);
+};
 
 const selectOrdersData = (state) => state.orders.data;
 
